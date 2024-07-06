@@ -33,6 +33,16 @@ class EditPost extends Component
         return view('livewire.edit-post');
     }
 
+    public function deletePost() {
+        $this->authorize('edit', $this->Post);
+        //Remove categories
+        $this->Post->categories()->detach();
+        $this->Post->delete();
+        session()->flash('global-message', 'Post deleted successfully.');
+        session()->flash('global-message-status', 'success');
+        return redirect()->route('dashboard.posts');
+    }
+
     public function save() {
         // Policy check
         if ($this->isEdit) {
